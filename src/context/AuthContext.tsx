@@ -51,7 +51,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setIsLoading(true);
     try {
       const response = await AuthService.login(credentials);
-      // console.log('Login Response:', response); 
 
       const token = response.token || response.access_token;
       const user = response.user;

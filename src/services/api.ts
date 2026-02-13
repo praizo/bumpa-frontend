@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: '/api', // Proxy will handle this
+  baseURL: '/api', 
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
@@ -11,7 +11,6 @@ const api = axios.create({
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
-  console.log('API Request Token:', token); // Debugging
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }

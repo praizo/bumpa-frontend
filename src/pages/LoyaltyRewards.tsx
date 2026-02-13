@@ -29,7 +29,6 @@ export default function LoyaltyRewards() {
       try {
         const userId = user?.id || 1;
         const loyaltyData = await LoyaltyService.getLoyaltyData(userId);
-        console.log("Loyalty Data Debug:", loyaltyData);
         setData(loyaltyData);
       } catch (error) {
         console.error("Failed to fetch loyalty data", error);

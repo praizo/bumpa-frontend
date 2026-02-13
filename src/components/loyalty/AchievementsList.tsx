@@ -22,7 +22,6 @@ export function AchievementsList({
   });
 
   const allAchievements = [...normalizedUnlocked, ...nextAvailable];
-  console.log(unlocked);
 
   return (
     <div className="space-y-6">
