@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom
 import { AuthProvider, useAuth } from './context/AuthContext';
 import LoginPage from './pages/Login';
 import DashboardPage from './pages/Dashboard';
+import LoyaltyRewards from './pages/LoyaltyRewards';
 import DashboardLayout from './layouts/DashboardLayout';
 
 // Protected Route Wrapper
@@ -30,7 +31,7 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route element={<DashboardLayout />}>
               <Route path="/" element={<DashboardPage />} />
-              {/* Loyalty Route will be added here */}
+              <Route path="/loyalty" element={<LoyaltyRewards />} />
             </Route>
           </Route>
         </Routes>

@@ -3,18 +3,15 @@
 import * as React from "react"
 import {
   AudioWaveform,
-  BookOpen,
-  Bot,
   Command,
   Frame,
   GalleryVerticalEnd,
   Map,
   PieChart,
-  Settings2,
-  SquareTerminal,
+  Trophy,
 } from "lucide-react"
 
-import { NavMain } from "@/components/nav-main"
+
 import { NavProjects } from "@/components/nav-projects"
 import { NavUser } from "@/components/nav-user"
 import { TeamSwitcher } from "@/components/team-switcher"
@@ -50,7 +47,7 @@ const data = {
       plan: "Free",
     },
   ],
- 
+
   projects: [
     {
       name: "Design Engineering",
@@ -66,6 +63,11 @@ const data = {
       name: "Travel",
       url: "#",
       icon: Map,
+    },
+    {
+      name: "Loyalty Rewards",
+      url: "/loyalty",
+      icon: Trophy,
     },
   ],
 }

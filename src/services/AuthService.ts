@@ -3,8 +3,6 @@ import type { LoginCredentials, LoginResponse, User } from '../types/auth';
 
 export const AuthService = {
   async login(credentials: LoginCredentials): Promise<LoginResponse> {
-    // Adjust endpoint as needed to match your Laravel backend (e.g., /login or /api/login)
-    // Since baseURL is /api, this request goes to /api/login
     const response = await api.post<LoginResponse>('/login', credentials);
     return response.data;
   },
