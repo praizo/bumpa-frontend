@@ -6,6 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
 import { Trophy } from "lucide-react";
+import { toast } from "sonner";
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -31,7 +32,7 @@ export default function LoyaltyRewards() {
         const loyaltyData = await LoyaltyService.getLoyaltyData(userId);
         setData(loyaltyData);
       } catch (error) {
-        console.error("Failed to fetch loyalty data", error);
+        toast.error("Failed to load loyalty data");
       } finally {
         setLoading(false);
       }
@@ -56,8 +57,9 @@ export default function LoyaltyRewards() {
       const loyaltyData = await LoyaltyService.getLoyaltyData(userId);
       setData(loyaltyData);
       setIsModalOpen(false);
+      toast.success("Purchase completed successfully!");
     } catch (error) {
-      console.error("Purchase failed", error);
+      toast.error("Purchase failed. Please try again.");
     } finally {
       setIsProcessing(false);
     }
