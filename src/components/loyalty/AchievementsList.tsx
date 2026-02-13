@@ -6,7 +6,7 @@ export function AchievementsList({
   unlocked,
   nextAvailable
 }: {
-  unlocked: AchievementProgress[],
+  unlocked: (AchievementProgress | string)[],
   nextAvailable: AchievementProgress[]
 }) {
   // Normalize unlocked achievements (API returns strings, but we need objects)

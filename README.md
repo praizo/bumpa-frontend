@@ -1,75 +1,127 @@
-# React + TypeScript + Vite
+# Bumpa Loyalty Rewards – Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A responsive customer-facing dashboard for Bumpa's loyalty rewards program, built with **React**, **TypeScript**, and **Vite**.
 
-Currently, two official plugins are available:
+Customers can view their unlocked achievements, current badge, and track progress toward the next tier.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tech Stack
 
-## React Compiler
+| Layer       | Technology                      |
+| :---------- | :------------------------------ |
+| Framework   | React 19 + TypeScript           |
+| Build       | Vite 7                          |
+| Styling     | Tailwind CSS 4                  |
+| UI Library  | shadcn/ui (Radix UI primitives) |
+| HTTP Client | Axios                           |
+| Routing     | React Router v7                 |
+| Toasts      | Sonner                          |
+| Icons       | Lucide React                    |
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+## Features
 
-Note: This will impact Vite dev & build performances.
+- **Authentication** – Token-based login with persistent sessions via `localStorage`.
+- **Loyalty Dashboard** – Displays current badge, achievements (unlocked & in-progress), and spending progress.
+- **Purchase Simulation** – Modal to simulate purchases and trigger achievement/badge unlocks.
+- **Level Unlock Modal** – Celebratory popup when a new badge tier is reached, showing cashback earned.
+- **Auto-Logout** – Axios interceptor automatically clears the session and redirects on `401 Unauthorized`.
+- **Toast Notifications** – User-facing success/error feedback via Sonner.
+- **Responsive Design** – Fully responsive grid layout for mobile, tablet, and desktop.
 
-## Expanding the ESLint configuration
+## Project Structure
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+src/
+├── components/
+│   ├── loyalty/          # AchievementCard, AchievementsList, LoyaltyCard, utils
+│   ├── ui/               # shadcn/ui components (Button, Dialog, Tabs, etc.)
+│   ├── app-sidebar.tsx   # Sidebar navigation
+│   └── nav-user.tsx      # User menu with logout
+├── context/
+│   └── AuthContext.tsx    # Auth state management
+├── layouts/
+│   └── DashboardLayout.tsx
+├── pages/
+│   ├── Login.tsx
+│   └── LoyaltyRewards.tsx
+├── services/
+│   ├── api.ts            # Axios instance + interceptors
+│   ├── AuthService.ts    # Login/logout API calls
+│   └── LoyaltyService.ts # Loyalty data + purchase API calls
+├── types/
+│   ├── auth.ts
+│   └── loyalty.ts
+└── App.tsx               # Routes + Toaster
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Getting Started
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Prerequisites
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Node.js 18+
+- npm or yarn
+- Backend API running (Laravel)
+
+### Installation
+
+```bash
+git clone <repository-url>
+cd bumpa-frontend
+npm install
+```
+
+### Configuration
+
+Copy the example env file and set your API URL:
+
+```bash
+cp .env-example .env
+```
+
+```env
+VITE_API_BASE_URL=http://bumpa-new.test
+```
+
+### Development
+
+```bash
+npm run dev
+```
+
+The app runs at `http://localhost:5173` by default. API requests to `/api/*` are proxied to your backend.
+
+### Build
+
+```bash
+npm run build
+```
+
+## API Endpoint
+
+The frontend consumes a single primary endpoint:
+
+```
+GET /api/users/{user}/achievements
+```
+
+**Response:**
+
+```json
+{
+  "unlocked_achievements": ["First Purchase", "Big Spender"],
+  "next_available_achievements": [
+    {
+      "name": "Premium Buyer",
+      "required_spend": 50000,
+      "remaining_spend": 12000
+    }
+  ],
+  "current_badge": "Silver",
+  "next_badge": "Gold",
+  "remaining_to_unlock_next_badge": 3,
+  "next_achievement_progress": {
+    "name": "...",
+    "required_spend": 0,
+    "remaining_spend": 0
+  }
+}
 ```

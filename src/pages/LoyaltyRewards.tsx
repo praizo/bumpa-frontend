@@ -47,8 +47,13 @@ export default function LoyaltyRewards() {
       setIsProcessing(true);
       const response = await LoyaltyService.makePurchase(Number(purchaseAmount));
 
-      if (response.data.unlocked_badges && response.data.unlocked_badges.length > 0) {
-        setUnlockedBadges(response.data.unlocked_badges);
+      // Handle varying response shapes
+      const badges = response?.data?.unlocked_badges
+        || (response as any)?.unlocked_badges
+        || [];
+
+      if (badges.length > 0) {
+        setUnlockedBadges(badges);
       }
 
       await new Promise(resolve => setTimeout(resolve, 1000));
@@ -57,7 +62,6 @@ export default function LoyaltyRewards() {
       const loyaltyData = await LoyaltyService.getLoyaltyData(userId);
       setData(loyaltyData);
       setIsModalOpen(false);
-      toast.success("Purchase completed successfully!");
     } catch (error) {
       toast.error("Purchase failed. Please try again.");
     } finally {
@@ -90,7 +94,7 @@ export default function LoyaltyRewards() {
 
           <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
             <DialogTrigger asChild>
-              <Button variant="outline" onClick={() => setIsModalOpen(true)}>Simulate Purchase</Button>
+              <Button variant="default" onClick={() => setIsModalOpen(true)}>Simulate Purchase</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-md">
               <DialogHeader>

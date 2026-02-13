@@ -64,7 +64,7 @@ export function LoyaltyCard({ data }: LoyaltyCardProps) {
             </CardDescription>
           </CardHeader>
           <CardContent className="mt-4">
-            <Progress value={progressToNext} className="h-3 bg-muted-foreground/20 [&>div]:bg-blue-600" />
+            <Progress value={progressToNext} className="h-3 bg-muted-foreground/20 [&>div]:bg-black" />
             <div className="flex justify-between text-xs text-muted-foreground mt-2 font-medium">
               <span>{formatCurrency(currentSpend)} spent</span>
               <span>{formatCurrency(nextAchievement.required_spend)} target</span>
