@@ -18,15 +18,27 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Check for existing token and fetch user on mount
   useEffect(() => {
+    // The /user endpoint does not exist on the backend yet, so we cannot restore the user session via API.
+    // For now, if a token exists, we assuming the user is authenticated but might lack user details.
+    // We can alternatively decode the JWT if it contains user info.
+    // Commenting out the API call to prevent 404 errors.
+
     const initializeAuth = async () => {
       const token = localStorage.getItem('token');
+      const storedUser = localStorage.getItem('user');
+
       if (token) {
-        try {
-          const userData = await AuthService.getUser();
-          setUser(userData);
-        } catch (error) {
-          console.error("Failed to restore session", error);
-          localStorage.removeItem('token');
+        if (storedUser) {
+          try {
+            setUser(JSON.parse(storedUser));
+          } catch (e) {
+            console.error("Failed to parse stored user", e);
+            // Fallback if parsing fails
+            setUser({ id: 1, name: "User", email: "user@example.com" });
+          }
+        } else {
+          // Fallback if no user data stored but token exists
+          setUser({ id: 1, name: "User", email: "user@example.com" });
         }
       }
       setIsLoading(false);
@@ -38,9 +50,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const login = async (credentials: LoginCredentials) => {
     setIsLoading(true);
     try {
-      const { token, user } = await AuthService.login(credentials);
+      const response = await AuthService.login(credentials);
+      // console.log('Login Response:', response); 
+
+      const token = response.token || response.access_token;
+      const user = response.user;
+
+      if (!token) {
+        console.error("Token is missing in login response! Keys:", Object.keys(response));
+        throw new Error("Authentication failed: No token received");
+      }
+
       localStorage.setItem('token', token);
-      setUser(user);
+      if (user) {
+        localStorage.setItem('user', JSON.stringify(user));
+        setUser(user);
+      }
     } catch (error) {
       console.error("Login failed", error);
       throw error;
@@ -56,6 +81,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.error("Logout error", error);
     } finally {
       localStorage.removeItem('token');
+      localStorage.removeItem('user');
       setUser(null);
     }
   };

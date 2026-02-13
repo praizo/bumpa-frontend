@@ -6,7 +6,8 @@ export interface User {
 }
 
 export interface LoginResponse {
-  token: string;
+  token?: string;
+  access_token?: string;
   user: User;
 }
 

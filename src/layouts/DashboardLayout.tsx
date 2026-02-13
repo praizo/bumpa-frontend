@@ -2,7 +2,6 @@ import { AppSidebar } from "@/components/app-sidebar"
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
@@ -18,10 +17,9 @@ import { Outlet, useLocation } from "react-router-dom"
 export default function DashboardLayout() {
   const location = useLocation();
 
-  // Simple breadcrumb logic - can be made more robust later
-  const getPageTitle = (pathname: string) => {
+   const getPageTitle = (pathname: string) => {
     switch (pathname) {
-      case "/": return "Data Fetching"; // Default dashboard
+      case "/": return "Data Fetching"; 
       case "/loyalty": return "Loyalty Rewards";
       default: return "Dashboard";
     }
@@ -40,12 +38,6 @@ export default function DashboardLayout() {
             />
             <Breadcrumb>
               <BreadcrumbList>
-                <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">
-                    Build Your Application
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
                   <BreadcrumbPage>{getPageTitle(location.pathname)}</BreadcrumbPage>
                 </BreadcrumbItem>

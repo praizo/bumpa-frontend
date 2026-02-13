@@ -37,7 +37,7 @@ export function LoginForm({
 
     try {
       await login({ email, password });
-      navigate("/"); // Redirect to dashboard
+      navigate("/loyalty");
     } catch (err) {
       setError("Invalid email or password");
     } finally {
